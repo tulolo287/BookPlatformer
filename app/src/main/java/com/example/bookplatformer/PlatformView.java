@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -92,10 +93,19 @@ public class PlatformView extends SurfaceView implements Runnable {
                 if (!viewPort.clipObject(go.getWorldLocation().x, go.getWorldLocation().y,
                         go.getWidth(), go.getHeight())) {
                     go.setVisible(true);
+                    if (levelManager.isPlaying()) {
+                        go.update(fps, levelManager.gravity);
+                    }
                 } else {
                     go.setVisible(false);
                 }
             }
+        }
+
+        if (levelManager.isPlaying()) {
+            viewPort.setWorldCenter(levelManager.gameObjects.get(levelManager.playerIndex).
+                    getWorldLocation().x,
+                    levelManager.gameObjects.get(levelManager.playerIndex).getWorldLocation().y);
         }
     }
 
@@ -132,5 +142,15 @@ public class PlatformView extends SurfaceView implements Runnable {
 
             ourHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction() & event.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                levelManager.switchPlayingStatus();
+                break;
+        }
+        return true;
     }
 }

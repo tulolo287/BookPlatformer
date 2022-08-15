@@ -5,6 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public abstract class GameObject {
+    private float xVelocity;
+    private float yVelocity;
+    final int LEFT = -1;
+    final int RIGHT = 1;
+    private int facing;
+    private boolean move = false;
+
     private Vector2Point5D worldLocation;
     private float width;
     private float height;
@@ -15,6 +22,64 @@ public abstract class GameObject {
     private char type;
 
     private String bitmapName;
+
+    private RectHitbox rectHitbox = new RectHitbox();
+
+    public void setRectHitbox() {
+        rectHitbox.setTop(worldLocation.y);
+        rectHitbox.setLeft(worldLocation.x);
+        rectHitbox.setBottom(worldLocation.y + height);
+        rectHitbox.setRight(worldLocation.x + width);
+    }
+
+    public RectHitbox getRectHitbox() {
+        return rectHitbox;
+    }
+
+    void move(long fps) {
+        if (xVelocity != 0) {
+            this.worldLocation.x += xVelocity / fps;
+        }
+        if (yVelocity != 0) {
+            this.worldLocation.y += yVelocity / fps;
+        }
+    }
+
+    public float getxVelocity() {
+        return xVelocity;
+    }
+
+    public void setxVelocity(float xVelocity) {
+        if (move) {
+            this.xVelocity = xVelocity;
+        }
+    }
+
+    public float getyVelocity() {
+        return yVelocity;
+    }
+
+    public void setyVelocity(float yVelocity) {
+        if (move) {
+            this.yVelocity = yVelocity;
+        }
+    }
+
+    public int getFacing() {
+        return facing;
+    }
+
+    public void setFacing(int facing) {
+        this.facing = facing;
+    }
+
+    public boolean isMove() {
+        return move;
+    }
+
+    public void setMove(boolean move) {
+        this.move = move;
+    }
 
     public abstract void update(long fps, float gravity);
 

@@ -114,5 +114,13 @@ public class LevelManager {
         }
     }
 
+    public void switchPlayingStatus() {
+        playing = !playing;
+        if (playing) {
+            gravity = 6;
+        } else {
+            gravity = 0;
+        }
+    }
 
 }

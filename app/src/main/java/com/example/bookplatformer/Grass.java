@@ -14,6 +14,7 @@ public class Grass extends GameObject {
         setBitmapName("bgs");
 
         setWorldLocation(worldStartX, worldStartY, 0);
+        setRectHitbox();
     }
 
     @Override
